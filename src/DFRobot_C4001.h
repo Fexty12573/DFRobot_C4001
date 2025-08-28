@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <Stream.h>
 
 #if defined(ARDUINO_AVR_UNO) || defined(ESP8266)
 #include "SoftwareSerial.h"
@@ -435,7 +436,7 @@ public:
 #if defined(ARDUINO_AVR_UNO) || defined(ESP8266)
   DFRobot_C4001_UART(SoftwareSerial *sSerial, uint32_t Baud);
 #else
-  DFRobot_C4001_UART(HardwareSerial *hSerial, uint32_t Baud ,uint8_t rxpin = 0, uint8_t txpin = 0);
+  DFRobot_C4001_UART(Stream *hSerial, uint32_t Baud ,uint8_t rxpin = 0, uint8_t txpin = 0);
 #endif
 
   bool begin(void);
@@ -447,7 +448,7 @@ private:
 #if defined(ARDUINO_AVR_UNO) || defined(ESP8266)
   SoftwareSerial *_serial;
 #else
-  HardwareSerial *_serial;
+  Stream *_serial;
 #endif
   uint32_t _baud;
   uint8_t _rxpin;
