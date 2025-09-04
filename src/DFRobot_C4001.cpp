@@ -133,7 +133,7 @@ bool DFRobot_C4001::setSensorMode(eMode_t mode)
       }
     }
   }else{
-    sensorStop();
+    if (!sensorStop()) return false;
     if(mode == eExitMode){
       writeReg(0, (uint8_t *)EXIST_MODE, strlen(EXIST_MODE));
       delay(50);  
@@ -731,16 +731,17 @@ bool DFRobot_C4001::sensorStop(void)
   delay(1000);
   len = readReg(0, temp, 200);
   while(1){
-    if(len != 0){
+    if(len >= 10){
       if (strstr((const char *)temp, "sensorStop") != NULL) {
         return true;
       }
+    } else {
+        return false;
     }
     memset(temp, 0, 200);
     delay(400);
     writeReg(0, (uint8_t *)STOP_SENSOR, strlen(STOP_SENSOR));
     len = readReg(0, temp, 200);
-    
   }
 }
 
